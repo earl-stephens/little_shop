@@ -19,6 +19,7 @@ class ReviewsController < ApplicationController
       # redirect to root_path
       redirect_to user_reviews_path(current_user.id)
     else
+      flash[:notice] = @review.errors.full_messages.join(", ")
       render :new
     end
 # binding.pry
