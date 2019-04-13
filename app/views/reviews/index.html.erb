@@ -1,0 +1,7 @@
+<% @user.reviews.each do |review| %>
+  <section id="info-<%= review.id %>">
+    <p>Review title: <%= review.title %></p>
+    <p>Review description: <%= review.description %></p>
+    <p>Review rating: <%= review.rating %></p>
+  </section>
+<% end %>
