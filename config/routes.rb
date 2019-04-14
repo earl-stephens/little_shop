@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   delete '/cart/items/:id', to: 'cart#remove_item', as: :remove_item
 
   resources :items, only: [:index, :show] do
-    resources :reviews, only: [:new, :create]
+    resources :reviews, only: [:new, :create, :edit, :update, :destroy]
   end
 
   resources :merchants, only: [:index]
@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   patch '/profile/edit', to: 'users#update'
   namespace :profile do
     resources :orders, only: [:index, :show, :destroy, :create]
-    # resources :reviews, only: [:new, :create]
   end
 
   namespace :dashboard do

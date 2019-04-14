@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe 'user goes to new review page' do
-  it 'and leaves a review' do
+describe 'user clicks on update review' do
+  it 'lets user update the review' do
     user = User.create!(name: "Joe", email: "joe@gmail.com", password: "password", address: "123 Main", city: "Charleston", state: "SC", zip: "12345")
     merchant = User.create!(name: "Jim", email: "jim@gmail.com", password: "password", address: "321 Main", city: "Charleston", state: "SC", zip: "12345", role: 1)
     item1 = merchant.items.create!(name: "item1", active: true, price: 2.5, description: "first item", inventory: 55, image: "https://frugalyork.files.wordpress.com/2011/03/jelly-beans-green-apple.gif?w=225&h=300&zoom=2")
@@ -11,7 +11,6 @@ describe 'user goes to new review page' do
     oi1 = order.order_items.create!(item_id: item1.id, quantity: 4, price: 2.5, fulfilled: true)
     oi2 = order.order_items.create!(item_id: item2.id, quantity: 5, price: 3.5, fulfilled: true)
     oi3 = order.order_items.create!(item_id: item3.id, quantity: 6, price: 4.5, fulfilled: true)
-
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
     visit profile_order_path(order)
@@ -32,11 +31,17 @@ describe 'user goes to new review page' do
     # expect(current_path).to eq(root_path)
     expect(current_path).to eq(user_reviews_path(user))
     within "#info-#{review.id}" do
-      expect(page).to have_content(review.title)
-      expect(page).to have_content(review.description)
-      expect(page).to have_content(review.rating)
-      expect(page).to have_content(review.created_at.to_s(:long))
-      expect(page).to have_content(review.updated_at.to_s(:long))
+      click_on "Edit this review"
+    end
+
+    fill_in "Title", with: "Hated it"
+
+    click_on "Update Review"
+
+    expect(current_path).to eq(user_reviews_path(user))
+
+    within "#info-#{review.id}" do
+      expect(page).to have_content("Review title: Hated it")
     end
   end
 end

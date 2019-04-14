@@ -1,7 +1,12 @@
 <% @user.reviews.each do |review| %>
   <section id="info-<%= review.id %>">
+    <p>Item being reviewed: <%= review.item.name %></p>
     <p>Review title: <%= review.title %></p>
     <p>Review description: <%= review.description %></p>
     <p>Review rating: <%= review.rating %></p>
+    <p>Review written on: <%= review.created_at.to_s(:long) %></p>
+    <p>Review updated on: <%= review.updated_at.to_s(:long) %></p>
+    <p><%= link_to "Edit this review", edit_item_review_path(review.item_id, review) %></p>
+    <p><%= link_to "Delete this review", item_review_path(review.item_id, review), method: :delete %></p>
   </section>
 <% end %>

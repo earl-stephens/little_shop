@@ -2,7 +2,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include ActionView::Helpers::TextHelper
 
-  helper_method :current_user, :current_admin?, :current_merchant?, :current_reguser?, :cart, :time_as_words
+  helper_method :current_user,
+                :current_admin?,
+                :current_merchant?,
+                :current_reguser?,
+                :cart,
+                :time_as_words,
+                :reviewable?,
+                :set_reveiwed_flag
 
   def cart
     @cart ||= Cart.new(session[:cart])
@@ -54,5 +61,19 @@ class ApplicationController < ActionController::Base
     hours = time[-8..-7]
     minutes = time[-5..-4]
     "#{days} #{pluralize(hours, 'hour')} #{pluralize(minutes, 'minute')}"
+  end
+
+  def set_reveiwed_flag
+    oi = OrderItem.find(session[:oi_tracker])
+    oi.update(reviewed: true)
+  end
+
+  def reviewable?(oitem)
+    oi = OrderItem.find(oitem.id)
+    if oi.reviewed == false
+      return true
+    else
+      return false
+    end
   end
 end
