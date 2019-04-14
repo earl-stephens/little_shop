@@ -43,6 +43,8 @@ class ReviewsController < ApplicationController
   def destroy
     review = Review.find(params[:id])
     review.destroy
+    OrderItem.find(session[:oi_tracker]).update(reviewed: false)
+    session[:oi_tracker] = nil
     redirect_to user_reviews_path(current_user.id)
   end
 

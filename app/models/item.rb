@@ -49,4 +49,8 @@ class Item < ApplicationRecord
   def ordered?
     order_items.count > 0
   end
+
+  def avg_rating
+    self.reviews.average(:rating).to_f.round(1)
+  end
 end

@@ -1,3 +1,13 @@
 <%= tag.section id: "item" do %>
   <%= render partial: "card", locals: {item: @item, style_class: "item-show-card"}%>
+  <% @item.reviews.each do |review| %>
+    <section id="item-<%= review.id %>">
+      <p>Review title: <%= review.title %></p>
+      <p>Review author: <%= review.author %></p>
+      <p>Review: <%= review.description %></p>
+      <p>Review rating: <%= review.rating %></p>
+      <p>Review written on: <%= review.created_at.to_s(:long) %></p>
+      <p>Review updated on: <%= review.updated_at.to_s(:long) %></p>
+    </section>
+  <% end %>
 <% end %>
