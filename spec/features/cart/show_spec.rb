@@ -7,6 +7,7 @@ RSpec.describe "Cart show page" do
     @item_1 = create(:item, user: @merchant_1, inventory: 3)
     @item_2 = create(:item, user: @merchant_2)
     @item_3 = create(:item, user: @merchant_2)
+
   end
 
   context "a regular user or visitor sees their cart summary" do

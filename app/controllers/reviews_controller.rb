@@ -5,14 +5,13 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    # binding.pry
-    @item = Item.find_by(slug: params[:item_slug])
+    @item = Item.find(params[:item_slug])
     @review = Review.new
     session[:oi_tracker] = params[:oi]
   end
 
   def create
-    @item = Item.find(params[:item_id])
+    @item = Item.find_by(slug: params[:item_slug])
     @user = User.find(current_user.id)
     @review = @item.reviews.create(review_params)
     @review.user_id = @user.id
@@ -26,12 +25,14 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    @item = Item.find(params[:item_id])
+    # binding.pry
+    @item = Item.find(params[:item_slug])
     @review = Review.find(params[:id])
   end
 
   def update
-    @item = Item.find(params[:item_id])
+    # binding.pry
+    @item = Item.find_by(slug: params[:item_slug])
     @review = Review.find(params[:id])
     if @review.update(review_params)
       redirect_to user_reviews_path(current_user.slug)

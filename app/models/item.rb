@@ -15,7 +15,7 @@ class Item < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
-
+  before_create :set_item_slug
   before_save :set_item_slug
 
   def to_param

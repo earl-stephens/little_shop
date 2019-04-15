@@ -7,6 +7,7 @@ FactoryBot.define do
     sequence(:price) { |n| ("#{n}".to_i+1)*1.5 }
     sequence(:inventory) { |n| ("#{n}".to_i+1)*2 }
     active { true }
+    slug {:name}
   end
 
   factory :inactive_item, parent: :item do
