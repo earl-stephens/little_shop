@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe 'on the items index page' do
+describe 'on the item show page' do
   before :each do
     @user = User.create!(name: "Joe", email: "joe@gmail.com", password: "password", address: "123 Main", city: "Charleston", state: "SC", zip: "12345")
     @merchant = User.create!(name: "Jim", email: "jim@gmail.com", password: "password", address: "321 Main", city: "Charleston", state: "SC", zip: "12345", role: 1)
@@ -14,8 +14,8 @@ describe 'on the items index page' do
     @review5 = @item2.reviews.create!(title: "review5", description: "best", rating: 5, user_id: @user.id)
   end
 
-  it 'shows reviews for each item' do
-    visit items_path
+  it 'shows all reviews for the item' do
+    visit item_path(@item1)
 
     within "#item-#{@review1.id}" do
       expect(page).to have_content("Review title: #{@review1.title}")
@@ -41,6 +41,9 @@ describe 'on the items index page' do
       expect(page).to have_content("Review written on: #{@review3.created_at.to_s(:long)}")
       expect(page).to have_content("Review updated on: #{@review3.updated_at.to_s(:long)}")
     end
+
+    visit item_path(@item2)
+
     within "#item-#{@review4.id}" do
       expect(page).to have_content("Review title: #{@review4.title}")
       expect(page).to have_content("Review author: #{@review4.author}")

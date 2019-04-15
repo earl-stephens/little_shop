@@ -184,6 +184,12 @@ RSpec.describe User, type: :model do
       expect(@m1.top_user_by_item_count.name).to eq(@u3.name)
       expect(@m1.top_user_by_item_count.quantity).to eq(10)
     end
+
+    it '.set_slug' do
+      user = User.create!(name: "Joe", email: "joe@gmail.com", password_digest: "password", address: "123 Main", city: "Las Vegas", state: "NV", zip: "12345")
+
+      expect(user.slug).to eq("joe-gmail-com")
+    end
   end
 
   describe 'class methods' do

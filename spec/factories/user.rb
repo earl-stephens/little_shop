@@ -9,6 +9,7 @@ FactoryBot.define do
     sequence(:zip) { |n| "Zip #{n}" }
     role { 0 }
     active { true }
+    slug { :email }
   end
   factory :inactive_user, parent: :user do
     sequence(:name) { |n| "Inactive User Name #{n}" }

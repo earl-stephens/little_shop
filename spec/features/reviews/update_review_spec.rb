@@ -28,7 +28,6 @@ describe 'user clicks on update review' do
     click_on "Create Review"
 
     review = Review.last
-    # expect(current_path).to eq(root_path)
     expect(current_path).to eq(user_reviews_path(user))
     within "#info-#{review.id}" do
       click_on "Edit this review"

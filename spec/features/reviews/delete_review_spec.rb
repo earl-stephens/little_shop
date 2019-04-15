@@ -30,7 +30,7 @@ describe 'user clicks on delete review' do
 
     review = Review.last
     # expect(current_path).to eq(root_path)
-    expect(current_path).to eq(user_reviews_path(user))
+    expect(current_path).to eq(user_reviews_path(user.slug))
     within "#info-#{review.id}" do
       click_on "Delete this review"
     end
@@ -39,7 +39,7 @@ describe 'user clicks on delete review' do
     #
     # click_on "Update Review"
 
-    expect(current_path).to eq(user_reviews_path(user))
+    expect(current_path).to eq(user_reviews_path(user.slug))
     expect(page).to_not have_content("Title: Good product")
     expect(page).to_not have_content("Description: got a lot of good use out of it")
     # within "#info-#{review.id}" do

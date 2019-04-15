@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+
   def new
     if current_user
       flash[:warning] = "You are already logged in."
@@ -14,6 +15,8 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(email: params[:email])
+    #user.save to set slug for current user
+    user.save if user
     if user && user.authenticate(params[:password])
       if user.active
         session[:user_id] = user.id
@@ -32,6 +35,7 @@ class SessionsController < ApplicationController
   private
 
   def redirect_user(user)
+
     if user.default?
       redirect_to profile_path
     elsif user.merchant?
