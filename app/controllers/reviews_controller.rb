@@ -5,7 +5,8 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    @item = Item.find(params[:item_id])
+    # binding.pry
+    @item = Item.find_by(slug: params[:item_slug])
     @review = Review.new
     session[:oi_tracker] = params[:oi]
   end

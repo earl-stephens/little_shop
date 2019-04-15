@@ -61,6 +61,14 @@ RSpec.describe Item, type: :model do
       @order_item_4 = create(:order_item, item: @item, created_at: 2.days.ago, updated_at: 1.day.ago)
     end
 
+    it '.set_item_slug' do
+      merch = create(:merchant)
+      item1 = Item.create!(name: "widget", price: 2.3, description: "green widget", image: "https://picsum.photos/200/300?image=1", inventory: 23, merchant_id: merch)
+
+      visit item_path(item1.slug)
+      expect(page).to have_content(item1.name)
+    end
+
     describe "#average_fulfillment_time" do
       it "calculates the average number of seconds between order_item creation and completion" do
         expect(@item.average_fulfillment_time).to eq(158400)
@@ -101,5 +109,6 @@ RSpec.describe Item, type: :model do
         expect(@item1.avg_rating).to eq(3.4)
       end
     end
+
   end
 end

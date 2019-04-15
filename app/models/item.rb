@@ -16,6 +16,16 @@ class Item < ApplicationRecord
     greater_than_or_equal_to: 0
   }
 
+  before_save :set_item_slug
+
+  def to_param
+    slug
+  end
+
+  def set_item_slug
+    self.slug = name.downcase.delete(" ") + rand(100..1000).to_s if name
+  end
+
   def self.popular_items(limit)
     item_popularity(limit, :desc)
   end
