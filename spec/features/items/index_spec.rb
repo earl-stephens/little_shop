@@ -62,6 +62,58 @@ RSpec.describe 'items index workflow', type: :feature do
       final_slug = item.slug
       expect(final_slug).to_not eq(initial_slug)
     end
-  end
 
+    it 'doesnt change slug on enable' do
+      merch = create(:merchant)
+      item1 = Item.create!(name: "widget", price: 2.0, description: "my widget", image: "https://picsum.photos/200/300?image=1", inventory: 35, merchant_id: merch.id)
+      initial_slug = item1.slug
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merch)
+      visit dashboard_items_path
+
+      within "#item-#{item1.id}" do
+        click_button 'Enable Item'
+      end
+
+      item1.reload
+      final_slug = item1.slug
+      expect(final_slug).to eq(initial_slug)
+    end
+
+    it 'doesnt change slug on disable' do
+      merch = create(:merchant)
+      item1 = Item.create!(active: true, name: "widget", price: 2.0, description: "my widget", image: "https://picsum.photos/200/300?image=1", inventory: 35, merchant_id: merch.id)
+      initial_slug = item1.slug
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merch)
+      visit dashboard_items_path
+
+      expect(item1.active).to eq(true)
+
+      within "#item-#{item1.id}" do
+        click_button 'Disable Item'
+      end
+      item1.reload
+      expect(item1.active).to eq(false)
+
+      final_slug = item1.slug
+      expect(final_slug).to eq(initial_slug)
+    end
+
+    it 'doesnt change the slug on inventory adjustments' do
+      user1 = create(:user)
+      merch = create(:merchant)
+      item1 = Item.create!(active: true, name: "widget", price: 2.0, description: "my widget", image: "https://picsum.photos/200/300?image=1", inventory: 35, merchant_id: merch.id)
+      order1 = Order.create!(user_id: user1.id, status: 2)
+      oi1 = OrderItem.create!(order_id: order1.id, item_id: item1.id, quantity: 10, price: 2.0)
+      initial_slug = item1.slug
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merch)
+
+      oi1.fulfill
+
+      item1.reload
+      final_slug = item1.slug
+      expect(item1.inventory).to eq(25)
+
+      expect(final_slug).to eq(initial_slug)
+    end
+  end
 end
