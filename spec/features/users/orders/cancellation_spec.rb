@@ -55,7 +55,6 @@ RSpec.describe 'User Order workflow', type: :feature do
     end
 
     # do same but as an admin
-
     after :each do
       visit profile_order_path(@order_1)
       click_button('Cancel Order')
